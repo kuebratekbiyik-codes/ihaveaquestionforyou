@@ -66,7 +66,24 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('yesBtn1').textContent = config.questions.first.yesBtn;
     document.getElementById('noBtn1').textContent = config.questions.first.noBtn;
     document.getElementById('secretAnswerBtn').textContent = config.questions.first.secretAnswer;
+
+    const hintText = document.getElementById('hintText');
+    const yesBtn1 = document.getElementById('yesBtn1');
+    const noBtn1 = document.getElementById('noBtn1');
     
+    // initial text on page 1
+    hintText.textContent = "Dont you dare klicking no... but you can try";
+    
+    // when YES is clicked
+    yesBtn1.addEventListener("click", () => {
+        hintText.textContent = "hmm... think again...";
+    });
+    
+    // when NO is clicked
+    noBtn1.addEventListener("click", () => {
+        hintText.textContent = "Dont you dare klicking no... but you can try";
+    });
+
     // Set second question texts
     document.getElementById('question2Text').textContent = config.questions.second.text;
     document.getElementById('startText').textContent = config.questions.second.startText;
@@ -118,6 +135,13 @@ function setRandomPosition(element) {
 function showNextQuestion(questionNumber) {
     document.querySelectorAll('.question-section').forEach(q => q.classList.add('hidden'));
     document.getElementById(`question${questionNumber}`).classList.remove('hidden');
+
+    const hintText = document.getElementById('hintText');
+
+    // hide hint text when leaving page 1
+    if (questionNumber !== 1 && hintText) {
+        hintText.textContent = "";
+    }
 }
 
 // Function to move the "No" button when clicked
