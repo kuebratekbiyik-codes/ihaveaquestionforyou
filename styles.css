@@ -315,4 +315,11 @@ h2 {
 .music-btn:hover {
     transform: scale(1.05);
     background: var(--secondary-color);
-} 
+}
+
+.hint-text {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #888;
+    font-style: italic;
+}
