@@ -166,14 +166,17 @@ function setInitialPosition() {
 
 loveMeter.addEventListener('input', () => {
     const value = parseInt(loveMeter.value);
-    loveValue.textContent = value;
-    
-    if (value > 100) {
-        extraLove.classList.remove('hidden');
-        const overflowPercentage = (value - 100) / 9900;
-        const extraWidth = overflowPercentage * window.innerWidth * 0.8;
-        loveMeter.style.width = `calc(100% + ${extraWidth}px)`;
-        loveMeter.style.transition = 'width 0.3s';
+
+    const percentSign = document.getElementById('percentSign');
+    const threshold = 1000; // <- ab diesem Wert soll Text statt % kommen
+
+    if (value < threshold) {
+        loveValue.textContent = value;
+        percentSign.style.display = 'inline';
+    } else {
+        loveValue.textContent = "to jupiter and back";
+        percentSign.style.display = 'none';
+    }
         
         // Show different messages based on the value
         if (value >= 5000) {
