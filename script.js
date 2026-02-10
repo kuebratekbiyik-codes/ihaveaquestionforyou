@@ -72,16 +72,16 @@ window.addEventListener('DOMContentLoaded', () => {
     const noBtn1 = document.getElementById('noBtn1');
     
     // initial text on page 1
-    hintText.textContent = "Dont you dare klicking no... but you can try";
+    hintText.textContent = "Don't you dare klicking no... but you can try 🤨";
     
     // when YES is clicked
     yesBtn1.addEventListener("click", () => {
-        hintText.textContent = "hmm... think again...";
+        hintText.textContent = "This is better, but think again... 😝";
     });
     
     // when NO is clicked
     noBtn1.addEventListener("click", () => {
-        hintText.textContent = "Dont you dare klicking no... but you can try";
+        hintText.textContent = "Nice try...but this is not acceptable! 😤";
     });
 
     // Set second question texts
