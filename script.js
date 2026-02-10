@@ -170,8 +170,8 @@ loveMeter.addEventListener('input', () => {
     const percentSign = document.getElementById('percentSign');
 
     // --- Jupiter switch ---
-    const JUPITER_AT = 1200; // <- ab hier soll Text statt Prozent kommen
-    if (value < JUPITER_AT) {
+    const JUPITER_AT = 6000; // <- ab hier soll Text statt Prozent kommen
+    if (value <= JUPITER_AT) {
         loveValue.textContent = value;
         if (percentSign) percentSign.style.display = "inline";
     } else {
