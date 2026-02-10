@@ -168,7 +168,7 @@ loveMeter.addEventListener('input', () => {
     const value = parseInt(loveMeter.value);
 
     const percentSign = document.getElementById('percentSign');
-    const threshold = 1000; // <- ab diesem Wert soll Text statt % kommen
+    const threshold = 6000; // <- ab diesem Wert soll Text statt % kommen
 
     if (value < threshold) {
         loveValue.textContent = value;
