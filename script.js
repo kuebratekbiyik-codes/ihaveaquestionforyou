@@ -165,30 +165,42 @@ function setInitialPosition() {
 }
 
 loveMeter.addEventListener('input', () => {
-    const value = parseInt(loveMeter.value);
+    const value = parseInt(loveMeter.value, 10);
 
     const percentSign = document.getElementById('percentSign');
-    const threshold = 6000; // <- ab diesem Wert soll Text statt % kommen
 
-    if (value < threshold) {
+    // --- Jupiter switch ---
+    const JUPITER_AT = 1200; // <- ab hier soll Text statt Prozent kommen
+    if (value < JUPITER_AT) {
         loveValue.textContent = value;
-        percentSign.style.display = 'inline';
+        if (percentSign) percentSign.style.display = "inline";
     } else {
         loveValue.textContent = "to jupiter and back";
-        percentSign.style.display = 'none';
+        if (percentSign) percentSign.style.display = "none";
     }
-        
-        // Show different messages based on the value
-        if (value >= 5000) {
-            extraLove.classList.add('super-love');
-            extraLove.textContent = config.loveMessages.extreme;
-        } else if (value > 1000) {
-            extraLove.classList.remove('super-love');
-            extraLove.textContent = config.loveMessages.high;
-        } else {
-            extraLove.classList.remove('super-love');
-            extraLove.textContent = config.loveMessages.normal;
-        }
+
+    // --- Hardcoded milestones for the extra text ---
+    let msg = "";
+    if (value >= 5000) {
+        msg = "OH DAMN, YOU'RE OBSESSED WITH ME BABY";
+        extraLove.classList.add('super-love');
+    } else if (value >= 1000) {
+        msg = "mhmm...now we're talking";
+        extraLove.classList.remove('super-love');
+    } else if (value > 100) {
+        msg = "okay, cute 🥰";
+        extraLove.classList.remove('super-love');
+    }
+
+    // --- Keep original behavior (show extraLove + slider expansion) ---
+    if (value > 100) {
+        extraLove.classList.remove('hidden');
+        extraLove.textContent = msg;
+
+        const overflowPercentage = (value - 100) / 9900;
+        const extraWidth = overflowPercentage * window.innerWidth * 0.8;
+        loveMeter.style.width = `calc(100% + ${extraWidth}px)`;
+        loveMeter.style.transition = 'width 0.3s';
     } else {
         extraLove.classList.add('hidden');
         extraLove.classList.remove('super-love');
