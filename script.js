@@ -89,10 +89,10 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('startText').textContent = config.questions.second.startText;
     document.getElementById('nextBtn').textContent = config.questions.second.nextBtn;
     
-    // Set third question texts
-    document.getElementById('question3Text').textContent = config.questions.third.text;
-    document.getElementById('yesBtn3').textContent = config.questions.third.yesBtn;
-    document.getElementById('noBtn3').textContent = config.questions.third.noBtn;
+    // Set forth question texts
+    document.getElementById('question4Text').textContent = config.questions.third.text;
+    document.getElementById('yesBtn4').textContent = config.questions.third.yesBtn;
+    document.getElementById('noBtn4').textContent = config.questions.third.noBtn;
 
     // Create initial floating elements
     createFloatingElements();
@@ -279,3 +279,47 @@ function setupMusicPlayer() {
         }
     });
 } 
+
+// --- Hedgehog slide (question3) ---
+let hedgehogPets = 0;
+
+function setupHedgehogSlide() {
+    const hedgehog = document.getElementById("hedgehog");
+    const hedgehogText = document.getElementById("hedgehogText");
+    const nextBtn = document.getElementById("hedgehogNextBtn");
+
+    if (!hedgehog || !hedgehogText || !nextBtn) return;
+
+    // Reset whenever we enter this slide
+    hedgehogPets = 0;
+    hedgehog.style.transform = "scale(1)";
+    hedgehogText.textContent = "pet it 3 times so we can move on";
+    nextBtn.classList.add("hidden");
+
+    const handlePet = () => {
+        hedgehogPets += 1;
+
+        // make hedgehog bigger each click
+        const scale = 1 + hedgehogPets * 0.12; // tweak grow strength here
+        hedgehog.style.transform = `scale(${scale})`;
+
+        if (hedgehogPets === 1) {
+            hedgehogText.textContent = "one pet";
+        } else if (hedgehogPets === 2) {
+            hedgehogText.textContent = "two pets";
+        } else if (hedgehogPets >= 3) {
+            hedgehogText.textContent = "aww, he likes youuuu. and i love you.";
+            nextBtn.classList.remove("hidden");
+
+            // prevent infinite growth after 3
+            hedgehog.removeEventListener("click", handlePet);
+        }
+    };
+
+    // Make sure we don't stack multiple listeners
+    hedgehog.replaceWith(hedgehog.cloneNode(true));
+    const freshHedgehog = document.getElementById("hedgehog");
+    freshHedgehog.addEventListener("click", handlePet);
+
+    nextBtn.onclick = () => showNextQuestion(4);
+}
