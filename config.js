@@ -35,9 +35,9 @@ const CONFIG = {
             nextBtn: "Next ❤️"
         },
         third: {
-            text: "Will you be my Valentine on February 14th, 2025? 🌹",
-            yesBtn: "Yes!",
-            noBtn: "No"
+            text: "NOW THE MOST IMPORTANT QUESTION: Lisa, will you be my Valentine on February 14th, 2026? 🌹",
+            yesBtn: "YES!!! ❤️",
+            noBtn: "...no, sorry."
         }
     },
 
@@ -50,9 +50,9 @@ const CONFIG = {
 
     // Messages that appear after they say "Yes!"
     celebration: {
-        title: "Yay! I'm the luckiest person in the world! 🎉💝💖💝💓",
-        message: "Now come get your gift, a big warm hug and a huge kiss!",
-        emojis: "🎁💖🤗💝💋❤️💕"
+        title: "AHHH, I guess I'm the luckiest person in the world and I love you a Walmart parking lot! 😝💖",
+        message: "My place on Saturday at 17:00? And I cook for us and we have a nice chill day that is full of love? 😝💖",
+        emojis: ""
     },
 
     // Color scheme for the website
