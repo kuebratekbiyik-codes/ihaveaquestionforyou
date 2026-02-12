@@ -5,7 +5,6 @@ const config = window.VALENTINE_CONFIG;
 function validateConfig() {
     const warnings = [];
 
-    // Check required fields
     if (!config.valentineName) {
         warnings.push("Valentine's name is not set! Using default.");
         config.valentineName = "My Love";
@@ -13,6 +12,7 @@ function validateConfig() {
 
     // Validate colors
     const isValidHex = (hex) => /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex);
+    if (!config.colors) config.colors = {};
     Object.entries(config.colors).forEach(([key, value]) => {
         if (!isValidHex(value)) {
             warnings.push(`Invalid color for ${key}! Using default.`);
@@ -21,24 +21,22 @@ function validateConfig() {
     });
 
     // Validate animation values
-    if (parseFloat(config.animations.floatDuration) < 5) {
+    if (config.animations && parseFloat(config.animations.floatDuration) < 5) {
         warnings.push("Float duration too short! Setting to 5s minimum.");
         config.animations.floatDuration = "5s";
     }
 
-    if (config.animations.heartExplosionSize < 1 || config.animations.heartExplosionSize > 3) {
+    if (config.animations && (config.animations.heartExplosionSize < 1 || config.animations.heartExplosionSize > 3)) {
         warnings.push("Heart explosion size should be between 1 and 3! Using default.");
         config.animations.heartExplosionSize = 1.5;
     }
 
-    // Log warnings if any
     if (warnings.length > 0) {
         console.warn("⚠️ Configuration Warnings:");
         warnings.forEach(warning => console.warn("- " + warning));
     }
 }
 
-// Default color values
 function getDefaultColor(key) {
     const defaults = {
         backgroundStart: "#ffafbd",
@@ -51,62 +49,64 @@ function getDefaultColor(key) {
 }
 
 // Set page title
-document.title = config.pageTitle;
+document.title = config.pageTitle || document.title;
 
-// Initialize the page content when DOM is loaded
+// -------------------- DOM READY --------------------
 window.addEventListener('DOMContentLoaded', () => {
-    // Validate configuration first
     validateConfig();
 
-    // Set texts from config
+    // Title
     document.getElementById('valentineTitle').textContent = `Hi ${config.valentineName} ❤️ `;
-    
-    // Set first question texts
+
+    // Q1 texts
     document.getElementById('question1Text').textContent = config.questions.first.text;
     document.getElementById('yesBtn1').textContent = config.questions.first.yesBtn;
     document.getElementById('noBtn1').textContent = config.questions.first.noBtn;
     document.getElementById('secretAnswerBtn').textContent = config.questions.first.secretAnswer;
 
+    // Hint logic Q1
     const hintText = document.getElementById('hintText');
     const yesBtn1 = document.getElementById('yesBtn1');
     const noBtn1 = document.getElementById('noBtn1');
-    
-    // initial text on page 1
+
     hintText.textContent = "Don't you dare klicking no... but you can try 🤨";
-    
-    // when YES is clicked
+
     yesBtn1.addEventListener("click", () => {
         hintText.textContent = "This is better, but think again... 😝";
     });
-    
-    // when NO is clicked
+
     noBtn1.addEventListener("click", () => {
         hintText.textContent = "Nice try...but this is not acceptable! 😤";
     });
 
-    // Set second question texts
+    // Q2 texts
     document.getElementById('question2Text').textContent = config.questions.second.text;
     document.getElementById('startText').textContent = config.questions.second.startText;
     document.getElementById('nextBtn').textContent = config.questions.second.nextBtn;
-    
-    // Set forth question texts
+
+    // Q4 texts (your former question3)
     document.getElementById('question4Text').textContent = config.questions.third.text;
     document.getElementById('yesBtn4').textContent = config.questions.third.yesBtn;
     document.getElementById('noBtn4').textContent = config.questions.third.noBtn;
 
-    // Create initial floating elements
+    // Floating background
     createFloatingElements();
 
-    // Setup music player
+    // Music
     setupMusicPlayer();
+
+    // Love meter initial state
+    setInitialPosition();
 });
 
-// Create floating hearts and bears
+// -------------------- Floating elements --------------------
 function createFloatingElements() {
     const container = document.querySelector('.floating-elements');
-    
-    // Create hearts
-    config.floatingEmojis.hearts.forEach(heart => {
+    if (!container) return;
+
+    // Hearts
+    const hearts = Array.isArray(config.floatingEmojis?.hearts) ? config.floatingEmojis.hearts : [];
+    hearts.forEach(heart => {
         const div = document.createElement('div');
         div.className = 'heart';
         div.innerHTML = heart;
@@ -114,8 +114,9 @@ function createFloatingElements() {
         container.appendChild(div);
     });
 
-    // Create bears
-    config.floatingEmojis.bears.forEach(bear => {
+    // Bears (guard against undefined!)
+    const bears = Array.isArray(config.floatingEmojis?.bears) ? config.floatingEmojis.bears : [];
+    bears.forEach(bear => {
         const div = document.createElement('div');
         div.className = 'bear';
         div.innerHTML = bear;
@@ -124,27 +125,27 @@ function createFloatingElements() {
     });
 }
 
-// Set random position for floating elements
 function setRandomPosition(element) {
     element.style.left = Math.random() * 100 + 'vw';
     element.style.animationDelay = Math.random() * 5 + 's';
     element.style.animationDuration = 10 + Math.random() * 20 + 's';
 }
 
-// Function to show next question
+// -------------------- Navigation --------------------
 function showNextQuestion(questionNumber) {
     document.querySelectorAll('.question-section').forEach(q => q.classList.add('hidden'));
     document.getElementById(`question${questionNumber}`).classList.remove('hidden');
 
     const hintText = document.getElementById('hintText');
+    if (questionNumber !== 1 && hintText) hintText.textContent = "";
 
-    // hide hint text when leaving page 1
-    if (questionNumber !== 1 && hintText) {
-        hintText.textContent = "";
+    // IMPORTANT: init hedgehog slide when entering question3
+    if (questionNumber === 3) {
+        setupHedgehogSlide();
     }
 }
 
-// Function to move the "No" button when clicked
+// -------------------- Button trolling --------------------
 function moveButton(button) {
     const x = Math.random() * (window.innerWidth - button.offsetWidth);
     const y = Math.random() * (window.innerHeight - button.offsetHeight);
@@ -153,122 +154,117 @@ function moveButton(button) {
     button.style.top = y + 'px';
 }
 
-// Love meter functionality
+// -------------------- Love meter --------------------
 const loveMeter = document.getElementById('loveMeter');
 const loveValue = document.getElementById('loveValue');
 const extraLove = document.getElementById('extraLove');
 
 function setInitialPosition() {
+    if (!loveMeter || !loveValue) return;
     loveMeter.value = 100;
     loveValue.textContent = 100;
     loveMeter.style.width = '100%';
 }
 
-loveMeter.addEventListener('input', () => {
-    const value = parseInt(loveMeter.value, 10);
+if (loveMeter) {
+    loveMeter.addEventListener('input', () => {
+        const value = parseInt(loveMeter.value, 10);
+        const percentSign = document.getElementById('percentSign');
 
-    const percentSign = document.getElementById('percentSign');
+        // Jupiter switch (you wanted "over 6000" - you set 7000, keeping yours)
+        const JUPITER_AT = 7000;
+        if (value <= JUPITER_AT) {
+            loveValue.textContent = value;
+            if (percentSign) percentSign.style.display = "inline";
+        } else {
+            loveValue.textContent = "to jupiter and back";
+            if (percentSign) percentSign.style.display = "none";
+        }
 
-    // --- Jupiter switch ---
-    const JUPITER_AT = 7000; // <- ab hier soll Text statt Prozent kommen
-    if (value <= JUPITER_AT) {
-        loveValue.textContent = value;
-        if (percentSign) percentSign.style.display = "inline";
-    } else {
-        loveValue.textContent = "to jupiter and back";
-        if (percentSign) percentSign.style.display = "none";
-    }
+        // Hardcoded milestones
+        let msg = "";
+        if (value >= 5000) {
+            msg = "OH DAMN, YOU'RE OBSESSED WITH ME BABY";
+            extraLove.classList.add('super-love');
+        } else if (value >= 1000) {
+            msg = "mhmm...now we're talking";
+            extraLove.classList.remove('super-love');
+        } else if (value > 100) {
+            msg = "okay, cute 🥰";
+            extraLove.classList.remove('super-love');
+        }
 
-    // --- Hardcoded milestones for the extra text ---
-    let msg = "";
-    if (value >= 5000) {
-        msg = "OH DAMN, YOU'RE OBSESSED WITH ME BABY";
-        extraLove.classList.add('super-love');
-    } else if (value >= 1000) {
-        msg = "mhmm...now we're talking";
-        extraLove.classList.remove('super-love');
-    } else if (value > 100) {
-        msg = "okay, cute 🥰";
-        extraLove.classList.remove('super-love');
-    }
+        // Keep original behavior (show extraLove + slider expansion)
+        if (value > 100) {
+            extraLove.classList.remove('hidden');
+            extraLove.textContent = msg;
 
-    // --- Keep original behavior (show extraLove + slider expansion) ---
-    if (value > 100) {
-        extraLove.classList.remove('hidden');
-        extraLove.textContent = msg;
+            const overflowPercentage = (value - 100) / 9900;
+            const extraWidth = overflowPercentage * window.innerWidth * 0.8;
+            loveMeter.style.width = `calc(100% + ${extraWidth}px)`;
+            loveMeter.style.transition = 'width 0.3s';
+        } else {
+            extraLove.classList.add('hidden');
+            extraLove.classList.remove('super-love');
+            loveMeter.style.width = '100%';
+        }
+    });
+}
 
-        const overflowPercentage = (value - 100) / 9900;
-        const extraWidth = overflowPercentage * window.innerWidth * 0.8;
-        loveMeter.style.width = `calc(100% + ${extraWidth}px)`;
-        loveMeter.style.transition = 'width 0.3s';
-    } else {
-        extraLove.classList.add('hidden');
-        extraLove.classList.remove('super-love');
-        loveMeter.style.width = '100%';
-    }
-});
-
-// Initialize love meter
-window.addEventListener('DOMContentLoaded', setInitialPosition);
-window.addEventListener('load', setInitialPosition);
-
-// Celebration function
+// -------------------- Celebration --------------------
 function celebrate() {
     document.querySelectorAll('.question-section').forEach(q => q.classList.add('hidden'));
     const celebration = document.getElementById('celebration');
     celebration.classList.remove('hidden');
-    
-    // Set celebration messages
+
     document.getElementById('celebrationTitle').textContent = config.celebration.title;
     document.getElementById('celebrationMessage').textContent = config.celebration.message;
     document.getElementById('celebrationEmojis').textContent = config.celebration.emojis;
-    
-    // Create heart explosion effect
+
     createHeartExplosion();
 }
 
-// Create heart explosion animation
 function createHeartExplosion() {
+    const container = document.querySelector('.floating-elements');
+    if (!container) return;
+
+    const hearts = Array.isArray(config.floatingEmojis?.hearts) ? config.floatingEmojis.hearts : [];
     for (let i = 0; i < 50; i++) {
         const heart = document.createElement('div');
-        const randomHeart = config.floatingEmojis.hearts[Math.floor(Math.random() * config.floatingEmojis.hearts.length)];
+        const randomHeart = hearts[Math.floor(Math.random() * hearts.length)] || "❤️";
         heart.innerHTML = randomHeart;
         heart.className = 'heart';
-        document.querySelector('.floating-elements').appendChild(heart);
+        container.appendChild(heart);
         setRandomPosition(heart);
     }
 }
 
-// Music Player Setup
+// -------------------- Music --------------------
 function setupMusicPlayer() {
     const musicControls = document.getElementById('musicControls');
     const musicToggle = document.getElementById('musicToggle');
     const bgMusic = document.getElementById('bgMusic');
     const musicSource = document.getElementById('musicSource');
 
-    // Only show controls if music is enabled in config
-    if (!config.music.enabled) {
+    if (!config.music?.enabled) {
         musicControls.style.display = 'none';
         return;
     }
 
-    // Set music source and volume
     musicSource.src = config.music.musicUrl;
-    bgMusic.volume = config.music.volume || 0.5;
+    bgMusic.volume = config.music.volume ?? 0.5;
     bgMusic.load();
 
-    // Try autoplay if enabled
     if (config.music.autoplay) {
         const playPromise = bgMusic.play();
         if (playPromise !== undefined) {
-            playPromise.catch(error => {
+            playPromise.catch(() => {
                 console.log("Autoplay prevented by browser");
                 musicToggle.textContent = config.music.startText;
             });
         }
     }
 
-    // Toggle music on button click
     musicToggle.addEventListener('click', () => {
         if (bgMusic.paused) {
             bgMusic.play();
@@ -278,9 +274,9 @@ function setupMusicPlayer() {
             musicToggle.textContent = config.music.startText;
         }
     });
-} 
+}
 
-// --- Hedgehog slide (question3) ---
+// -------------------- Hedgehog slide (question3) --------------------
 let hedgehogPets = 0;
 
 function setupHedgehogSlide() {
@@ -290,36 +286,34 @@ function setupHedgehogSlide() {
 
     if (!hedgehog || !hedgehogText || !nextBtn) return;
 
-    // Reset whenever we enter this slide
+    // reset state
     hedgehogPets = 0;
     hedgehog.style.transform = "scale(1)";
-    hedgehogText.textContent = "pet it 3 times so we can move on";
+    hedgehogText.textContent = "pet it 3 times so we can move on 🥹";
     nextBtn.classList.add("hidden");
 
     const handlePet = () => {
         hedgehogPets += 1;
 
-        // make hedgehog bigger each click
-        const scale = 1 + hedgehogPets * 0.12; // tweak grow strength here
+        // grow each click
+        const scale = 1 + hedgehogPets * 0.12;
         hedgehog.style.transform = `scale(${scale})`;
 
         if (hedgehogPets === 1) {
             hedgehogText.textContent = "one pet";
         } else if (hedgehogPets === 2) {
             hedgehogText.textContent = "two pets";
-        } else if (hedgehogPets >= 3) {
+        } else {
             hedgehogText.textContent = "aww, he likes youuuu. and i love you.";
             nextBtn.classList.remove("hidden");
-
-            // prevent infinite growth after 3
             hedgehog.removeEventListener("click", handlePet);
         }
     };
 
-    // Make sure we don't stack multiple listeners
-    hedgehog.replaceWith(hedgehog.cloneNode(true));
-    const freshHedgehog = document.getElementById("hedgehog");
-    freshHedgehog.addEventListener("click", handlePet);
+    // avoid stacking listeners
+    const cleanHedgehog = hedgehog.cloneNode(true);
+    hedgehog.parentNode.replaceChild(cleanHedgehog, hedgehog);
+    cleanHedgehog.addEventListener("click", handlePet);
 
     nextBtn.onclick = () => showNextQuestion(4);
 }
