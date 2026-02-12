@@ -181,7 +181,7 @@ if (loveMeter) {
             loveValue.textContent = value;
             if (percentSign) percentSign.style.display = "inline";
         } else {
-            loveValue.textContent = "to jupiter and back";
+            loveValue.textContent = "To Jupiter and back!! 🚀";
             if (percentSign) percentSign.style.display = "none";
         }
 
@@ -367,6 +367,6 @@ function setupQuestion4() {
     // ✅ only correct button continues
     nb2.addEventListener("click", () => {
         feedback.textContent = "Correct answer! 😝💗";
-        setTimeout(() => showNextQuestion(5), 1200);
+        setTimeout(() => showNextQuestion(5), 1600);
     });
 }
