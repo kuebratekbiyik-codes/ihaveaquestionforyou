@@ -250,20 +250,16 @@ if (loveMeter) {
             loveMeter.style.width = '100%';
         }
 
-        // enable next only at max
         const nextBtn = document.getElementById("nextBtn");
-        const max = parseInt(loveMeter.max, 10);
+        const REQUIRED = 7000;
         
         if (nextBtn) {
-            if (value === max) {
+            if (value >= REQUIRED) {
                 nextBtn.classList.remove("disabled-btn");
-                extraLove.classList.remove("hidden");
-                extraLove.textContent = "okayyyy now you may proceed 😌";
             } else {
                 nextBtn.classList.add("disabled-btn");
             }
         }
-
     });
 }
 
