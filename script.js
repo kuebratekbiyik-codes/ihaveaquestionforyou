@@ -89,6 +89,16 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('yesBtn5').textContent = config.questions.third.yesBtn;
     document.getElementById('noBtn5').textContent = config.questions.third.noBtn;
 
+    const q5Feedback = document.getElementById("q5Feedback");
+    const noBtn5 = document.getElementById("noBtn5");
+    
+    if (noBtn5 && q5Feedback) {
+        noBtn5.addEventListener("click", () => {
+            q5Feedback.textContent = "DAS IST RESPEKTLOS 😭";
+        });
+    }
+
+
     // Floating background
     createFloatingElements();
 
