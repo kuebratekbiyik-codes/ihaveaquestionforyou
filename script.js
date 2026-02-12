@@ -103,7 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
     createFloatingElements();
 
     // Music
-    setupMusicPlayer();
+    //setupMusicPlayer();
 
     // Love meter initial state
     setInitialPosition();
@@ -157,6 +157,11 @@ function showNextQuestion(questionNumber) {
     if (questionNumber === 4) {
         setupQuestion4();
     }
+    const title = document.getElementById("valentineTitle");
+    if (title) {
+      title.style.display = (questionNumber === 1) ? "block" : "none";
+}
+
 }
 
 // -------------------- Button trolling --------------------
