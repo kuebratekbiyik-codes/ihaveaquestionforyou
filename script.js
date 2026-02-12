@@ -84,10 +84,10 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('startText').textContent = config.questions.second.startText;
     document.getElementById('nextBtn').textContent = config.questions.second.nextBtn;
 
-    // Q4 texts (your former question3)
-    document.getElementById('question4Text').textContent = config.questions.third.text;
-    document.getElementById('yesBtn4').textContent = config.questions.third.yesBtn;
-    document.getElementById('noBtn4').textContent = config.questions.third.noBtn;
+    // Q5 texts (your former question4)
+    document.getElementById('question5Text').textContent = config.questions.third.text;
+    document.getElementById('yesBtn5').textContent = config.questions.third.yesBtn;
+    document.getElementById('noBtn5').textContent = config.questions.third.noBtn;
 
     // Floating background
     createFloatingElements();
@@ -104,7 +104,6 @@ function createFloatingElements() {
     const container = document.querySelector('.floating-elements');
     if (!container) return;
 
-    // Hearts
     const hearts = Array.isArray(config.floatingEmojis?.hearts) ? config.floatingEmojis.hearts : [];
     hearts.forEach(heart => {
         const div = document.createElement('div');
@@ -114,7 +113,7 @@ function createFloatingElements() {
         container.appendChild(div);
     });
 
-    // Bears (guard against undefined!)
+    // Guard against undefined bears
     const bears = Array.isArray(config.floatingEmojis?.bears) ? config.floatingEmojis.bears : [];
     bears.forEach(bear => {
         const div = document.createElement('div');
@@ -139,9 +138,14 @@ function showNextQuestion(questionNumber) {
     const hintText = document.getElementById('hintText');
     if (questionNumber !== 1 && hintText) hintText.textContent = "";
 
-    // IMPORTANT: init hedgehog slide when entering question3
+    // init hedgehog slide whenever we enter it
     if (questionNumber === 3) {
         setupHedgehogSlide();
+    }
+
+    // init the new 3-button slide whenever we enter it
+    if (questionNumber === 4) {
+        setupQuestion4();
     }
 }
 
@@ -171,13 +175,13 @@ if (loveMeter) {
         const value = parseInt(loveMeter.value, 10);
         const percentSign = document.getElementById('percentSign');
 
-        // Jupiter switch (you wanted "over 6000" - you set 7000, keeping yours)
-        const JUPITER_AT = 7000;
+        // Jupiter switch
+        const JUPITER_AT = 7000; // your current setting
         if (value <= JUPITER_AT) {
             loveValue.textContent = value;
             if (percentSign) percentSign.style.display = "inline";
         } else {
-            loveValue.textContent = "To Jupiter and back!! 🚀";
+            loveValue.textContent = "to jupiter and back";
             if (percentSign) percentSign.style.display = "none";
         }
 
@@ -315,5 +319,54 @@ function setupHedgehogSlide() {
     hedgehog.parentNode.replaceChild(cleanHedgehog, hedgehog);
     cleanHedgehog.addEventListener("click", handlePet);
 
+    // go to NEW question4
     nextBtn.onclick = () => showNextQuestion(4);
+}
+
+// -------------------- NEW: Question4 (3 buttons, only button2 continues) --------------------
+function setupQuestion4() {
+    const qText = document.getElementById("question4Text");
+    const b1 = document.getElementById("q4Btn1");
+    const b2 = document.getElementById("q4Btn2");
+    const b3 = document.getElementById("q4Btn3");
+    const feedback = document.getElementById("q4Feedback");
+
+    if (!qText || !b1 || !b2 || !b3 || !feedback) return;
+
+    qText.textContent =
+        "Anyway — back to the question. So you love me to Jupiter and back, huh? Then tell me… which one of these also applies:";
+
+    b1.textContent = "…in a suspiciously dramatic slow-motion montage 🎬";
+    b2.textContent = "With a tiny (romantic) picnic on Enceladus 🧺✨";
+    b3.textContent = "…by sending 300 love letters via space pigeons 🛰️🕊️";
+
+    feedback.textContent = "";
+
+    // Clear old listeners by cloning
+    const c1 = b1.cloneNode(true);
+    const c2 = b2.cloneNode(true);
+    const c3 = b3.cloneNode(true);
+    b1.parentNode.replaceChild(c1, b1);
+    b2.parentNode.replaceChild(c2, b2);
+    b3.parentNode.replaceChild(c3, b3);
+
+    const nb1 = document.getElementById("q4Btn1");
+    const nb2 = document.getElementById("q4Btn2");
+    const nb3 = document.getElementById("q4Btn3");
+
+    nb1.addEventListener("click", () => {
+        feedback.textContent = "Wrong… but honestly? That’s hilarious. Try again 😌";
+        moveButton(nb1);
+    });
+
+    nb3.addEventListener("click", () => {
+        feedback.textContent = "ABSOLUTELY not. Try again 😤";
+        moveButton(nb3);
+    });
+
+    // ✅ only correct button continues
+    nb2.addEventListener("click", () => {
+        feedback.textContent = "Okayyyyy that was the correct answer 😳💗";
+        setTimeout(() => showNextQuestion(5), 400);
+    });
 }
