@@ -15,75 +15,73 @@ const CONFIG = {
     // Find more emojis at: https://emojipedia.org
     floatingEmojis: {
         hearts: ['❤️', '💖', '❤️', '💖'],  // Heart emojis
-        // bears: ['🧸', '🐻']                       // Cute bear emojis
+        // If you don't want bears, keep this as an empty array (prevents JS errors)
+        bears: []
+        // bears: ['🧸', '🐻']
     },
 
     // Questions and answers
     // Customize each question and its possible responses
     questions: {
         first: {
-            text: "Okay, first of all: Do you like me?",                                    // First interaction
-            yesBtn: "Yes!",                                             // Text for "Yes" button
-            noBtn: "No.",                                               // Text for "No" button
-            secretAnswer: "I don't like you, I love youuu! ❤️"           // Secret hover message
+            text: "Okay, first of all: Do you like me?",
+            yesBtn: "Yes!",
+            noBtn: "No.",
+            secretAnswer: "I don't like you, I love youuu! ❤️"
         },
         second: {
-            text: "Well, then tell me: How much do you love me?",                          // For the love meter
-            startText: "This much!",                                   // Text before the percentage
-            nextBtn: "Next ❤️"                                         // Text for the next button
+            text: "Well, then tell me: How much do you love me?",
+            startText: "This much!",
+            nextBtn: "Next ❤️"
         },
         third: {
-            text: "Will you be my Valentine on February 14th, 2025? 🌹", // The big question!
-            yesBtn: "Yes!",                                             // Text for "Yes" button
-            noBtn: "No"                                                 // Text for "No" button
+            text: "Will you be my Valentine on February 14th, 2025? 🌹",
+            yesBtn: "Yes!",
+            noBtn: "No"
         }
     },
 
     // Love meter messages
-    // They show up depending on how far they slide the meter
     loveMessages: {
-        extreme: "OH DAMN, YOU'RE OBSESSED WITH ME BABY",  // Shows when they go past 5000%
-        high: "mhmm...now we're talking",              // Shows when they go past 1000%
-        normal: "okay, cute 🥰"                           // Shows when they go past 100%
+        extreme: "OH DAMN, YOU'RE OBSESSED WITH ME BABY",
+        high: "mhmm...now we're talking",
+        normal: "okay, cute 🥰"
     },
 
     // Messages that appear after they say "Yes!"
     celebration: {
         title: "Yay! I'm the luckiest person in the world! 🎉💝💖💝💓",
         message: "Now come get your gift, a big warm hug and a huge kiss!",
-        emojis: "🎁💖🤗💝💋❤️💕"  // These will bounce around
+        emojis: "🎁💖🤗💝💋❤️💕"
     },
 
     // Color scheme for the website
-    // Use https://colorhunt.co or https://coolors.co to find beautiful color combinations
     colors: {
-        backgroundStart: "#5E081E",      // Gradient start (try pastel colors for a soft look)
-        backgroundEnd: "#E48397",        // Gradient end (should complement backgroundStart)
-        buttonBackground: "#ff6b6b",     // Button color (should stand out against the background)
-        buttonHover: "#ff8787",          // Button hover color (slightly lighter than buttonBackground)
-        textColor: "#ff4757"             // Text color (make sure it's readable!)
+        backgroundStart: "#5E081E",
+        backgroundEnd: "#E48397",
+        buttonBackground: "#ff6b6b",
+        buttonHover: "#ff8787",
+        textColor: "#ff4757"
     },
 
     // Animation settings
-    // Adjust these if you want faster/slower animations
     animations: {
-        floatDuration: "15s",           // How long it takes hearts to float up (10-20s recommended)
-        floatDistance: "50px",          // How far hearts move sideways (30-70px recommended)
-        bounceSpeed: "0.5s",            // Speed of bouncing animations (0.3-0.7s recommended)
-        heartExplosionSize: 1.5         // Size of heart explosion effect (1.2-2.0 recommended)
+        floatDuration: "15s",
+        floatDistance: "50px",
+        bounceSpeed: "0.5s",
+        heartExplosionSize: 1.5
     },
 
     // Background Music (Optional)
-    // Add your own music URL after getting proper licenses
     music: {
-        enabled: true,                     // Music feature is enabled
-        autoplay: true,                    // Try to autoplay (note: some browsers may block this)
-        musicUrl: "https://res.cloudinary.com/dncywqfpb/video/upload/v1738399057/music_qrhjvy.mp3", // Music streaming URL
-        startText: "🎵 Play Music",        // Button text to start music
-        stopText: "🔇 Stop Music",         // Button text to stop music
-        volume: 0.5                        // Volume level (0.0 to 1.0)
+        enabled: true,
+        autoplay: true,
+        musicUrl: "https://res.cloudinary.com/dncywqfpb/video/upload/v1738399057/music_qrhjvy.mp3",
+        startText: "🎵 Play Music",
+        stopText: "🔇 Stop Music",
+        volume: 0.5
     }
 };
 
 // Don't modify anything below this line unless you know what you're doing
-window.VALENTINE_CONFIG = CONFIG; 
+window.VALENTINE_CONFIG = CONFIG;
