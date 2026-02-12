@@ -21,6 +21,7 @@
             </audio>
         </div>
 
+        <!-- First Question -->
         <div class="question-section" id="question1">
             <h2 id="question1Text"></h2>
             <button class="cute-btn" onclick="moveButton(this)" id="yesBtn1"></button>
@@ -33,6 +34,7 @@
             </div>
         </div>
 
+        <!-- Second Question (Love Meter) -->
         <div class="question-section hidden" id="question2">
             <h2 id="question2Text"></h2>
             <div class="love-meter">
@@ -48,19 +50,33 @@
             <button class="cute-btn" onclick="showNextQuestion(3)" id="nextBtn"></button>
         </div>
 
+        <!-- Hedgehog Slide -->
         <div class="question-section hidden" id="question3">
-          <h2>Oh look a random hedgehog spawned!!🥹</h2>
-          <div id="hedgehog" class="hedgehog">🦔</div>
-          <p id="hedgehogText" class="hedgehog-text">pet it 3 times so we can move on 🥹</p>
-          <button id="hedgehogNextBtn" class="cute-btn hidden">Continue</button>
+            <h2>Oh look a random hedgehog spawned!!🥹</h2>
+            <div id="hedgehog" class="hedgehog">🦔</div>
+            <p id="hedgehogText" class="hedgehog-text">Pet it 3 times so we can move on 🥹</p>
+            <button id="hedgehogNextBtn" class="cute-btn hidden">Continue</button>
         </div>
 
+        <!-- NEW: 3-button question slide -->
         <div class="question-section hidden" id="question4">
             <h2 id="question4Text"></h2>
-            <button class="cute-btn final-yes" onclick="celebrate()" id="yesBtn4"></button>
-            <button class="cute-btn" onclick="moveButton(this)" id="noBtn4"></button>
+
+            <button class="cute-btn" id="q4Btn1"></button>
+            <button class="cute-btn" id="q4Btn2"></button>
+            <button class="cute-btn" id="q4Btn3"></button>
+
+            <p id="q4Feedback" class="hint-text"></p>
         </div>
 
+        <!-- Final Question (moved from question4 -> question5) -->
+        <div class="question-section hidden" id="question5">
+            <h2 id="question5Text"></h2>
+            <button class="cute-btn final-yes" onclick="celebrate()" id="yesBtn5"></button>
+            <button class="cute-btn" onclick="moveButton(this)" id="noBtn5"></button>
+        </div>
+
+        <!-- Celebration -->
         <div class="celebration hidden" id="celebration">
             <h2 id="celebrationTitle"></h2>
             <p class="celebration-text" id="celebrationMessage"></p>
