@@ -84,6 +84,28 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('startText').textContent = config.questions.second.startText;
     document.getElementById('nextBtn').textContent = config.questions.second.nextBtn;
 
+    const nextBtn = document.getElementById("nextBtn");
+
+    // Start: locked
+    if (nextBtn) {
+        nextBtn.classList.add("disabled-btn");
+        nextBtn.addEventListener("click", () => {
+            const max = parseInt(loveMeter.max, 10);
+            const value = parseInt(loveMeter.value, 10);
+    
+            if (value !== max) {
+                // show message
+                extraLove.classList.remove("hidden");
+                extraLove.classList.remove("super-love");
+                extraLove.textContent = "...try again";
+                return;
+            }
+    
+            showNextQuestion(3);
+        });
+    }
+
+
     // Q5 texts (your former question4)
     document.getElementById('question5Text').textContent = config.questions.third.text;
     document.getElementById('yesBtn5').textContent = config.questions.third.yesBtn;
@@ -227,6 +249,21 @@ if (loveMeter) {
             extraLove.classList.remove('super-love');
             loveMeter.style.width = '100%';
         }
+
+        // enable next only at max
+        const nextBtn = document.getElementById("nextBtn");
+        const max = parseInt(loveMeter.max, 10);
+        
+        if (nextBtn) {
+            if (value === max) {
+                nextBtn.classList.remove("disabled-btn");
+                extraLove.classList.remove("hidden");
+                extraLove.textContent = "okayyyy now you may proceed 😌";
+            } else {
+                nextBtn.classList.add("disabled-btn");
+            }
+        }
+
     });
 }
 
