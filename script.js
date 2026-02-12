@@ -177,7 +177,7 @@ if (loveMeter) {
             loveValue.textContent = value;
             if (percentSign) percentSign.style.display = "inline";
         } else {
-            loveValue.textContent = "to jupiter and back";
+            loveValue.textContent = "To Jupiter and back!! 🚀";
             if (percentSign) percentSign.style.display = "none";
         }
 
@@ -187,10 +187,10 @@ if (loveMeter) {
             msg = "OH DAMN, YOU'RE OBSESSED WITH ME BABY";
             extraLove.classList.add('super-love');
         } else if (value >= 1000) {
-            msg = "mhmm...now we're talking";
+            msg = "Mhmm...now we're talking 😝";
             extraLove.classList.remove('super-love');
         } else if (value > 100) {
-            msg = "okay, cute 🥰";
+            msg = "Okay, cute 🥰";
             extraLove.classList.remove('super-love');
         }
 
@@ -289,7 +289,7 @@ function setupHedgehogSlide() {
     // reset state
     hedgehogPets = 0;
     hedgehog.style.transform = "scale(1)";
-    hedgehogText.textContent = "pet it 3 times so we can move on 🥹";
+    hedgehogText.textContent = "Pet it 3 times so we can move on 🥹";
     nextBtn.classList.add("hidden");
 
     const handlePet = () => {
@@ -300,11 +300,11 @@ function setupHedgehogSlide() {
         hedgehog.style.transform = `scale(${scale})`;
 
         if (hedgehogPets === 1) {
-            hedgehogText.textContent = "one pet";
+            hedgehogText.textContent = "One pet 🥹";
         } else if (hedgehogPets === 2) {
-            hedgehogText.textContent = "two pets";
+            hedgehogText.textContent = "Two pets 🥹";
         } else {
-            hedgehogText.textContent = "aww, he likes youuuu. and i love you.";
+            hedgehogText.textContent = "Aww, he likes youuuu 🥹 And I love youuu 😝";
             nextBtn.classList.remove("hidden");
             hedgehog.removeEventListener("click", handlePet);
         }
