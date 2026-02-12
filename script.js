@@ -85,16 +85,15 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('nextBtn').textContent = config.questions.second.nextBtn;
 
     const nextBtn = document.getElementById("nextBtn");
-
-    // Start: locked
+    const REQUIRED = 7000;
+    
     if (nextBtn) {
         nextBtn.classList.add("disabled-btn");
+    
         nextBtn.addEventListener("click", () => {
-            const max = parseInt(loveMeter.max, 10);
             const value = parseInt(loveMeter.value, 10);
     
-            if (value !== max) {
-                // show message
+            if (value < REQUIRED) {
                 extraLove.classList.remove("hidden");
                 extraLove.classList.remove("super-love");
                 extraLove.textContent = "...try again";
@@ -104,6 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
             showNextQuestion(3);
         });
     }
+
 
 
     // Q5 texts (your former question4)
