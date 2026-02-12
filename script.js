@@ -336,9 +336,9 @@ function setupQuestion4() {
     qText.textContent =
         "Anyway — back to the question. So you love me to Jupiter and back, huh? Then tell me… which one of these also applies:";
 
-    b1.textContent = "…in a suspiciously dramatic slow-motion montage 🎬";
-    b2.textContent = "With a tiny (romantic) picnic on Enceladus 🧺✨";
-    b3.textContent = "…by sending 300 love letters via space pigeons 🛰️🕊️";
+    b1.textContent = "…in slow motion while confetti meteors rain down 🎉☄️";
+    b2.textContent = "…with a tiny (romantic) picnic on Enceladus 🥹🧺";
+    b3.textContent = "…by sending 300 love letters via space pigeons 💌🕊️";
 
     feedback.textContent = "";
 
@@ -355,18 +355,18 @@ function setupQuestion4() {
     const nb3 = document.getElementById("q4Btn3");
 
     nb1.addEventListener("click", () => {
-        feedback.textContent = "Wrong… but honestly? That’s hilarious. Try again 😌";
-        moveButton(nb1);
+        feedback.textContent = "Wrong… but honestly not would be so cool 😌 Try again! ";
+        // moveButton(nb1);
     });
 
     nb3.addEventListener("click", () => {
-        feedback.textContent = "ABSOLUTELY not. Try again 😤";
-        moveButton(nb3);
+        feedback.textContent = "AWW, you know I would love this, but this is not what we say! 😝";
+        // moveButton(nb3);
     });
 
     // ✅ only correct button continues
     nb2.addEventListener("click", () => {
-        feedback.textContent = "Okayyyyy that was the correct answer 😳💗";
-        setTimeout(() => showNextQuestion(5), 400);
+        feedback.textContent = "Correct answer! 😝💗";
+        setTimeout(() => showNextQuestion(5), 1200);
     });
 }
